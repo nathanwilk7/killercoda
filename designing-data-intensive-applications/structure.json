@@ -1,0 +1,8 @@
+{
+  "title": "Designing Data-Intensive Applications",
+  "description": "Supplemental Course for TODO",
+  "items": [
+    {"path": "1-reliable-scalable-maintainable-applications"},
+    {"path": "5-replication"}
+  ]
+}

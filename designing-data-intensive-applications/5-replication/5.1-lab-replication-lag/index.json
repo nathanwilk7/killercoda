@@ -1,0 +1,8 @@
+{
+  "title": "5.1 Lab - Replication Lag",
+  "description": "Problems with replication lag and TODO",
+  "backend": {
+    "imageid": "ubuntu"
+  }
+}
+
