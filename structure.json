@@ -1,9 +1,6 @@
 {
   "items": [
-    {
-       "path": "designing-data-intensive-applications",
-       "title": "Designing Data-Intensive Applications Interactive Course",
-       "description": "my TODO"
-    }
+    {"path": "ddia-1-reliable-scalable-maintainable-applications"}
+    {"path": "ddia-5-replication"}
   ]
 }
