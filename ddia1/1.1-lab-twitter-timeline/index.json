@@ -9,8 +9,8 @@
     "steps": [
       {
         "title": "Create an empty file",
-        "text": "entities.md",
-        #"verify": "entities.sh"
+        "text": "1-entities.md",
+        //"verify": "1-entities.sh"
       }
     ],
     "finish": {
