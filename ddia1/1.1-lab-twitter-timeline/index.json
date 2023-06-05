@@ -4,20 +4,20 @@
   "details": {
     "intro": {
       "text": "intro.md",
-      "foreground": "setup.sh",
+      "foreground": "setup.sh"
     },
     "steps": [
       {
         "title": "Create an empty file",
         "text": "1-entities.md",
-        "verify": "1-entities.sh",
+        "verify": "1-entities.sh"
       }
     ],
     "finish": {
-      "text": "finish.md",
+      "text": "finish.md"
     }
   },
   "backend": {
-    "imageid": "ubuntu",
+    "imageid": "ubuntu"
   }
 }

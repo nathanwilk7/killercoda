@@ -1,6 +1,10 @@
 {
   "items": [
-    {"path": "ddia1"}
-    {"path": "ddia5"}
+    {
+      "path": "ddia1"
+    },
+    {
+      "path": "ddia5"
+    }
   ]
 }
