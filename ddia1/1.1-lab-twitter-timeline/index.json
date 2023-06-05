@@ -11,7 +11,7 @@
         "title": "Create an empty file",
         "text": "1-entities.md",
         "verify": "1-entities.sh",
-      },
+      }
     ],
     "finish": {
       "text": "finish.md",
