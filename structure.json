@@ -1,5 +1,9 @@
 {
   "items": [
-    {"path": "designing-data-intensive-applications"}
+    {
+       "path": "designing-data-intensive-applications",
+       "title": "Designing Data-Intensive Applications Interactive Course",
+       "description": "my TODO"
+    }
   ]
 }
