@@ -1,0 +1,23 @@
+{
+  "title": "1.1 Lab - Twitter Timeline",
+  "description": "Intro lab for Twitter timeline to TODO",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "foreground": "setup.sh"
+    },
+    "steps": [
+      {
+        "title": "Create an empty file",
+        "text": "entities.md",
+        #"verify": "entities.sh"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "ubuntu"
+  }
+}
