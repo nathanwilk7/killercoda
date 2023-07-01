@@ -8,9 +8,18 @@
     },
     "steps": [
       {
-        "title": "Create an empty file",
-        "text": "1-entities.md",
-        "verify": "1-entities.sh"
+        "title": "Context/Gameplan",
+        "text": "1-context.md"
+      },
+      {
+        "title": "Entities/Nouns/Data Model",
+        "text": "2-entities.md",
+        "verify": "2-entities-verify.sh"
+      },
+      {
+        "title": "Example",
+        "text": "z-example.md",
+        "verify": "z-example.sh"
       }
     ],
     "finish": {

@@ -1,7 +1,10 @@
 {
-  "title": "DDIA Ch 1 TODO",
-  "description": "Ch 1 TODO",
+  "title": "Chapter 1: Reliable, Scalable, and Maintainable Applications",
+  "description": "Chapter 1 of the interactive course for Designing Data-Intensive Applications by Martin Kleppmann.",
   "items": [
+    {
+      "path": "intro"
+    },
     {
       "path": "1.1-lab-twitter-timeline"
     }

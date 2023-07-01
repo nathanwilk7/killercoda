@@ -1,0 +1,2 @@
+.tables
+select * from follows;
