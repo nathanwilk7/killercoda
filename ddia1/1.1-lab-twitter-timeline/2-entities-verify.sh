@@ -1,2 +1,2 @@
-.tables
-select * from follows;
+sqlite3
+.exit

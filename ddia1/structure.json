@@ -1,6 +1,6 @@
 {
-  "title": "Chapter 1: Reliable, Scalable, and Maintainable Applications",
-  "description": "Chapter 1 of the interactive course for Designing Data-Intensive Applications by Martin Kleppmann.",
+  "title": "Interactive Course - Designing Data-Intensive Applications: Chapter 1",
+  "description": "Reliability, Scalability, and Maintainability",
   "items": [
     {
       "path": "intro"

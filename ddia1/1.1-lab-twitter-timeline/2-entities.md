@@ -4,9 +4,10 @@ We’re going to start creating tables in SQLite for this lab, run this to start
 
 ```
 sqlite3
+
 ```{{exec}}
 
-First, let’s think about what tables we should create. Try to come up with a data model to support the use case described above and then write the create table statements for it. You're welcome to create your table in the sqlite instance and insert some mock data in them. Once you’re ready, compare your solution with the one below. You can either keep your data model as you put it into the system and adapt all the code below to work for your own data model or you can use the code I provide below which will work with the rest of the lab code. In general, feel free to follow this same rule of thumb for all labs.
+First, let’s think about what tables we should create. Try to come up with a data model on your own to support the use case described above and then write the create table statements for it. You're welcome to create your table in the sqlite instance and insert some mock data in them. Once you’re ready, compare your solution with the one below. You can either keep your data model as you put it into the system and adapt all the code below to work for your own data model or you can use the code I provide below which will work with the rest of the lab code. In general, feel free to follow this same rule of thumb for all labs.
 
 <details><summary>Solution</summary>
 The key entities/nouns here are:
@@ -48,7 +49,6 @@ TODO Verify that the tables were created:
 
 ```
 .tables
-# follows  tweets   users
 ```{{exec}}
 
 Note that SQLite [does not enforce foreign keys by default](https://www.sqlite.org/foreignkeys.html), we could turn on foreign key enforcement but that would slightly complicate some of the code in this lab, so we’re not going to do so.
@@ -57,7 +57,6 @@ Note that SQLite [does not enforce foreign keys by default](https://www.sqlite.o
 Let’s turn on headers at this time to make the query results easier to understand:
 
 ```
--- shows the table column names when we run select queries
 .headers on
 ```{{exec}}
 
