@@ -18,7 +18,13 @@ Tweets
 
 Follows
 
-![Untitled](lab/2-entities-er.png)
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
 [Source Diagram Link](https://whimsical.com/lab-0-1-entities-data-model-GVgogWwQiMcsU5roiByNjK)
 

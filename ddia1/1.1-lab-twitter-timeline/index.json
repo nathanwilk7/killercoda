@@ -17,9 +17,24 @@
         "verify": "2-entities-verify.sh"
       },
       {
-        "title": "Example",
-        "text": "z-example.md",
-        "verify": "z-example.sh"
+        "title": "Option 1: Timeline on Read",
+        "text": "3-timeline-on-read.md"
+      },
+      {
+        "title": "Option 2: Timeline on Write",
+        "text": "4-timeline-on-write.md"
+      },
+      {
+        "title": "Comparing Timeline on Read vs Timeline on Write",
+        "text": "5-comparing-timeline-read-write.md"
+      },
+      {
+        "title": "Benchmarking",
+        "text": "6-benchmarking.md"
+      },
+      {
+        "title": "Conclusion",
+        "text": "7-conclusion.md"
       }
     ],
     "finish": {
