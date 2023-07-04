@@ -14,7 +14,6 @@
       {
         "title": "Entities/Nouns/Data Model",
         "text": "2-entities.md",
-        "verify": "2-entities-verify.sh"
       },
       {
         "title": "Option 1: Timeline on Read",

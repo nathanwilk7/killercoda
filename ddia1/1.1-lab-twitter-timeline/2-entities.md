@@ -18,15 +18,7 @@ Tweets
 
 Follows
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-
-[Source Diagram Link](https://whimsical.com/lab-0-1-entities-data-model-GVgogWwQiMcsU5roiByNjK)
+[Diagram Link](https://whimsical.com/lab-0-1-entities-data-model-GVgogWwQiMcsU5roiByNjK)
 
 Let’s create the tables for our users, tweets, and follows in our SQLite database.
 
