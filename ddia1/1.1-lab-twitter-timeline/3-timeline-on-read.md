@@ -81,40 +81,42 @@ We can see there are 5 tweets, 1 from `alice`, 2 from `bob`, 1 from `charlie`, a
 Now it’s your turn to try to figure out how to write a query which does the following: Given a user ID, load all the tweets (id, poster_id, content, and post_time) for that users timeline sorted by the `post_time`. Remember that a user’s timeline should have all the tweets from that user’s “followees”.
 
 
+TODO fix formatting
+
 <details><summary>Hint: Here’s an example query which shows how to get the user IDs for a users’s “followees”</summary>
     
-    ```
-    select f.followee_id 
-    from users given_user 
-    join follows f on f.follower_id = given_user.id 
-    where given_user.username = 'alice';
-    ```{{exec}}
+```
+select f.followee_id 
+from users given_user 
+join follows f on f.follower_id = given_user.id 
+where given_user.username = 'alice';
+```{{exec}}
 
-    ```
-    # or if you prefer to use id instead of username
-    select f.followee_id 
-    from follows f 
-    where f.follower_id = 1;
-    ```{{exec}}
+```
+# or if you prefer to use id instead of username
+select f.followee_id 
+from follows f 
+where f.follower_id = 1;
+```{{exec}}
 </details>
 
 <details><summary>Solution</summary>
     
-    ```
-    select t.* from users given_user 
-    join follows f on f.follower_id = given_user.id 
-    join tweets t on t.poster_id = f.followee_id 
-    where given_user.username = 'alice'
-    order by t.post_time;
-    ```{{exec}}
+```
+select t.* from users given_user 
+join follows f on f.follower_id = given_user.id 
+join tweets t on t.poster_id = f.followee_id 
+where given_user.username = 'alice'
+order by t.post_time;
+```{{exec}}
 
-    ```
-    # or if your prefer to use id instead of username
-    select t.* from follows f 
-    join tweets t on t.poster_id = f.followee_id 
-    where f.follower_id = 1 
-    order by t.post_time;
-    ```{{exec}}
+```
+# or if your prefer to use id instead of username
+select t.* from follows f 
+join tweets t on t.poster_id = f.followee_id 
+where f.follower_id = 1 
+order by t.post_time;
+```{{exec}}
     
 
 Do you think this design for implementing timelines is a good solution? Is it performant? Is it scalable? Is it reliable?
@@ -122,9 +124,9 @@ Do you think this design for implementing timelines is a good solution? Is it pe
 
 <details><summary>Solution</summary>
     
-    Alright, I know this is cheesy but this is a bit of a trick question. The “correct” answer to this question is, “it depends.” It turns out that “it depends” is almost always the correct answer when starting to evaluate any design. In other words, asking if a system design is “good” without more details is not a reasonable question to ask given the information you have so far. We’ll talk more about this later and throughout this course, but it’s crucial to remember that every design makes tradeoffs and those tradeoffs are based on assumptions about how the system will be used. Is it write-heavy or read-heavy? How much downtime is acceptable? Who are the users and administrators? What types of reads and writes should be supported? How long of response time is acceptable? etc, etc, etc. I’ll have some examples of more well founded questions later, but I want to point out that it’s not useful to design a system in a vacuum, you should design based on the tradeoffs and assumptions you want built into the system.
-    
-    If you’re like me, when you first thought about this question, you thought some things like, “well it’s using SQLite so that means it will only run on a single instance, so it can be scaled vertically but not horizontally and SQLite only supports a single writer at a time” and “the query as written will be slow as the number of tweets and follows grows because it has to look up all the necessary tweets and sort them each time you run it”. These are (I think), reasonable things to think, but I’m trying to make the point that all designs must be built around the problem they’re trying to solve and there is no one size fits all magic solution which is always the right call. For example, if you’re writing an embedded system which needs to store relational data locally, then SQLite may be a good choice. However, if you need highly scalable relational data storage with high writes per second for a worldwide internet-based system, then SQLite may not the right choice of database.
+Alright, I know this is cheesy but this is a bit of a trick question. The “correct” answer to this question is, “it depends.” It turns out that “it depends” is almost always the correct answer when starting to evaluate any design. In other words, asking if a system design is “good” without more details is not a reasonable question to ask given the information you have so far. We’ll talk more about this later and throughout this course, but it’s crucial to remember that every design makes tradeoffs and those tradeoffs are based on assumptions about how the system will be used. Is it write-heavy or read-heavy? How much downtime is acceptable? Who are the users and administrators? What types of reads and writes should be supported? How long of response time is acceptable? etc, etc, etc. I’ll have some examples of more well founded questions later, but I want to point out that it’s not useful to design a system in a vacuum, you should design based on the tradeoffs and assumptions you want built into the system.
+
+If you’re like me, when you first thought about this question, you thought some things like, “well it’s using SQLite so that means it will only run on a single instance, so it can be scaled vertically but not horizontally and SQLite only supports a single writer at a time” and “the query as written will be slow as the number of tweets and follows grows because it has to look up all the necessary tweets and sort them each time you run it”. These are (I think), reasonable things to think, but I’m trying to make the point that all designs must be built around the problem they’re trying to solve and there is no one size fits all magic solution which is always the right call. For example, if you’re writing an embedded system which needs to store relational data locally, then SQLite may be a good choice. However, if you need highly scalable relational data storage with high writes per second for a worldwide internet-based system, then SQLite may not the right choice of database.
 
 </details> 
 

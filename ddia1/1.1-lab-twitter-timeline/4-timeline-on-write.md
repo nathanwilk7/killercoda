@@ -11,7 +11,7 @@ create table timelines (
   username text unique references users(username), 
   timeline_json text
 );
-```
+```{{exec}}
 
 Let’s insert the tweets from our tweets table into this timelines table to show how it works. Note that the code below is pretty hacky and you’d probably do something better than this in real life. We’re essentially using the timelines table as a key value store where the key is the user ID and the value is a JSON array of the user’s timeline.
 
@@ -94,7 +94,7 @@ Now we can load up Alice’s timeline using the timelines table like this:
 ```
 select timeline_json from timelines
 where username = 'alice';
-```
+```{{exec}}
 
 Or
 ```

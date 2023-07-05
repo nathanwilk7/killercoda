@@ -42,20 +42,21 @@ create table timelines (
 
 We’re going to insert some dummy data, TODO n users, follows, tweets, timeline, etc TODO this should only take a second or two to complete.
 
+TODO tune numbers
 ```
 insert into users (username)
-select abs(random()) || 'user' from generate_series(1, 1000);
+select abs(random()) || 'user' from generate_series(1, 500);
 
 insert into follows
-select abs(random() % 1000), abs(random() % 1000) 
+select abs(random() % 500), abs(random() % 500) 
 from generate_series(1, 100), users;
 
 insert into tweets (poster_id, content, post_time) 
 select
-  abs(random() % 1000), 
+  abs(random() % 500), 
   cast(abs(random()) as text) || ' some content',
   abs(random() % 1680750000)
-from generate_series(1, 500), users;
+from generate_series(1, 200), users;
 ```{{exec}}
 
 Note, this will take some time (about TODO seconds in my testing). If the process dies due to memory or whatever, try rerunning the benchmarking section with smaller numbers of users, follows, and tweets.
@@ -87,33 +88,32 @@ TODO how to see them? Look over the queries in `load_timeline_on_read.sql`  and 
 
 <details><summary>Solutions</summary>
     
-    ```
-    .read load_timeline_on_read.sql
-    ```{{exec}}
-    
-    ```
-    .read load_timeline_on_write.sql
-    ```{{exec}}
-    
-    TODO investigate sqlite query plan and include details about access, indexes, etc
+```
+.read load_timeline_on_read.sql
+```{{exec}}
+
+```
+.read load_timeline_on_write.sql
+```{{exec}}
+
+TODO talk about which is faster/slower and why
+TODO investigate sqlite query plan and include details about access, indexes, etc
 
 </details>    
 
 Now we’re going to compare how long inserts take using the two approaches. Same gig as above but reversed, how much faster do you think `insert_timeline_on_read.sql` will be compared to `insert_timeline_on_write.sql`? Explain your thought process.
 
 <details><summary>Solutions</summary>
-    
-    ```sql
-    sql
-    .read insert_timeline_on_read.sql
-    ```
-    
-    ```sql
-    sql
-    .read insert_timeline_on_write.sql
-    ```
-    
-    TODO
+
+```
+.read insert_timeline_on_read.sql
+```
+
+```
+.read insert_timeline_on_write.sql
+```
+
+TODO talk about which is faster/slower and why
     
 </details>
 
