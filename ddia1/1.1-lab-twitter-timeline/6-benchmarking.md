@@ -45,15 +45,15 @@ We’re going to insert some dummy data, TODO n users, follows, tweets, timeline
 TODO tune numbers
 ```
 insert into users (username)
-select abs(random()) || 'user' from generate_series(1, 500);
+select abs(random()) || 'user' from generate_series(1, 1000);
 
 insert into follows
-select abs(random() % 500), abs(random() % 500) 
-from generate_series(1, 100), users;
+select abs(random() % 1000), abs(random() % 1000) 
+from generate_series(1, 200), users;
 
 insert into tweets (poster_id, content, post_time) 
 select
-  abs(random() % 500), 
+  abs(random() % 1000), 
   cast(abs(random()) as text) || ' some content',
   abs(random() % 1680750000)
 from generate_series(1, 200), users;
@@ -84,7 +84,17 @@ Let’s turn on the query timer which will tell us how long each query takes. We
 
 **Stop** and **think hard** (maybe even do some reading about SQLite TODO links) about these benchmarking questions before you look at the solutions!
 
-TODO how to see them? Look over the queries in `load_timeline_on_read.sql`  and `load_timeline_on_write.sql`. Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and read.
+Let's look at the queries in `load_timeline_on_read.sql`  and `load_timeline_on_write.sql`.
+
+```
+.shell cat load_timeline_on_read.sql
+```{{exec}}
+
+```
+.shell cat load_timeline_on_write.sql
+```{{exec}}
+
+Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and read.
 
 <details><summary>Solutions</summary>
     
@@ -101,17 +111,32 @@ TODO investigate sqlite query plan and include details about access, indexes, et
 
 </details>    
 
-Now we’re going to compare how long inserts take using the two approaches. Same gig as above but reversed, how much faster do you think `insert_timeline_on_read.sql` will be compared to `insert_timeline_on_write.sql`? Explain your thought process.
+For this last benchmark, we're going to turn off the timer because I've written a custom "timer" into the queries themselves which will print out how long they take.
+```
+.timer off
+```{{exec}}
+
+Now we’re going to compare how long inserts take using the two approaches. Let's look at the insert on read/write queries (I'm only showing the first few lines of the insert on write, but there are actually 100 inserts).
+
+```
+.shell cat insert_timeline_on_read.sql
+```{{exec}}
+
+```
+.shell cat insert_timeline_on_write.sql | head
+```{{exec}}
+
+Same gig as above but reversed, how much faster do you think `insert_timeline_on_read.sql` will be compared to `insert_timeline_on_write.sql`? Explain your thought process.
 
 <details><summary>Solutions</summary>
 
 ```
 .read insert_timeline_on_read.sql
-```
+```{{exec}}
 
 ```
 .read insert_timeline_on_write.sql
-```
+```{{exec}}
 
 TODO talk about which is faster/slower and why
     

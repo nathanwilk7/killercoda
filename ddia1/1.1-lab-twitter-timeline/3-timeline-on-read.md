@@ -80,10 +80,7 @@ We can see there are 5 tweets, 1 from `alice`, 2 from `bob`, 1 from `charlie`, a
 
 Now it’s your turn to try to figure out how to write a query which does the following: Given a user ID, load all the tweets (id, poster_id, content, and post_time) for that users timeline sorted by the `post_time`. Remember that a user’s timeline should have all the tweets from that user’s “followees”.
 
-
-TODO fix formatting
-
-<details><summary>Hint: Here’s an example query which shows how to get the user IDs for a users’s “followees”</summary>
+<details><summary>Hint (if needed): Here’s an example query which shows how to get the user IDs for a users’s “followees”</summary>
     
 ```
 select f.followee_id 
@@ -92,8 +89,8 @@ join follows f on f.follower_id = given_user.id
 where given_user.username = 'alice';
 ```{{exec}}
 
+Or if you prefer to use id instead of username
 ```
-# or if you prefer to use id instead of username
 select f.followee_id 
 from follows f 
 where f.follower_id = 1;
@@ -110,17 +107,17 @@ where given_user.username = 'alice'
 order by t.post_time;
 ```{{exec}}
 
+Or if your prefer to use id instead of username
 ```
-# or if your prefer to use id instead of username
 select t.* from follows f 
 join tweets t on t.poster_id = f.followee_id 
 where f.follower_id = 1 
 order by t.post_time;
 ```{{exec}}
     
-
 Do you think this design for implementing timelines is a good solution? Is it performant? Is it scalable? Is it reliable?
 
+<textarea rows="5" placeholder="(Scratch space for you to write your answer)"></textarea>
 
 <details><summary>Solution</summary>
     
