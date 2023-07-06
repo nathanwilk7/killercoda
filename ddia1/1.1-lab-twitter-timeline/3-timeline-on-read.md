@@ -117,8 +117,6 @@ order by t.post_time;
     
 Do you think this design for implementing timelines is a good solution? Is it performant? Is it scalable? Is it reliable?
 
-<textarea rows="5" placeholder="(Scratch space for you to write your answer)"></textarea>
-
 <details><summary>Solution</summary>
     
 Alright, I know this is cheesy but this is a bit of a trick question. The “correct” answer to this question is, “it depends.” It turns out that “it depends” is almost always the correct answer when starting to evaluate any design. In other words, asking if a system design is “good” without more details is not a reasonable question to ask given the information you have so far. We’ll talk more about this later and throughout this course, but it’s crucial to remember that every design makes tradeoffs and those tradeoffs are based on assumptions about how the system will be used. Is it write-heavy or read-heavy? How much downtime is acceptable? Who are the users and administrators? What types of reads and writes should be supported? How long of response time is acceptable? etc, etc, etc. I’ll have some examples of more well founded questions later, but I want to point out that it’s not useful to design a system in a vacuum, you should design based on the tradeoffs and assumptions you want built into the system.

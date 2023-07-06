@@ -45,18 +45,18 @@ We’re going to insert some dummy data, TODO n users, follows, tweets, timeline
 TODO tune numbers
 ```
 insert into users (username)
-select abs(random()) || 'user' from generate_series(1, 1000);
+select abs(random()) || 'user' from generate_series(1, 750);
 
 insert into follows
-select abs(random() % 1000), abs(random() % 1000) 
-from generate_series(1, 200), users;
+select abs(random() % 750), abs(random() % 750) 
+from generate_series(1, 150), users;
 
 insert into tweets (poster_id, content, post_time) 
 select
-  abs(random() % 1000), 
+  abs(random() % 750), 
   cast(abs(random()) as text) || ' some content',
   abs(random() % 1680750000)
-from generate_series(1, 200), users;
+from generate_series(1, 150), users;
 ```{{exec}}
 
 Note, this will take some time (about TODO seconds in my testing). If the process dies due to memory or whatever, try rerunning the benchmarking section with smaller numbers of users, follows, and tweets.
