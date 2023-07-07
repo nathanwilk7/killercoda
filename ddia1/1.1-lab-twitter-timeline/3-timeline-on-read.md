@@ -57,6 +57,7 @@ insert into tweets (poster_id, content, post_time)
 select david.id, 'david first tweet', 4 
 from users david 
 where david.username = 'david';
+select 'done';
 ```{{exec}}
 
 Note that we hardcoded the `post_time` for these tweets to be between 0 and 4.
@@ -106,6 +107,7 @@ join follows f on f.follower_id = given_user.id
 join tweets t on t.poster_id = f.followee_id 
 where given_user.username = 'alice'
 order by t.post_time;
+select 'done';
 ```{{exec}}
 
 Or if your prefer to use id instead of username
@@ -114,6 +116,7 @@ select t.* from follows f
 join tweets t on t.poster_id = f.followee_id 
 where f.follower_id = 1 
 order by t.post_time;
+select 'done';
 ```{{exec}}
     
 Do you think this design for implementing timelines is a good solution? Is it performant? Is it scalable? Is it reliable?

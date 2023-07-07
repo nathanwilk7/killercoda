@@ -38,6 +38,7 @@ create table timelines (
   username text unique references users(username), 
   timeline_json text
 );
+select 'done';
 ```{{exec}}
 
 We’re going to insert some dummy data, TODO n users, follows, tweets, timeline, etc TODO this should only take a second or two to complete.
@@ -57,6 +58,7 @@ select
   cast(abs(random()) as text) || ' some content',
   abs(random() % 1680750000)
 from generate_series(1, 150), users;
+select 'done';
 ```{{exec}}
 
 Note, this will take some time (about TODO seconds in my testing). If the process dies due to memory or whatever, try rerunning the benchmarking section with smaller numbers of users, follows, and tweets.
@@ -74,6 +76,7 @@ from tweets
 join follows on follows.followee_id = tweets.poster_id
 join users on users.id = follows.follower_id
 group by users.username;
+select 'done';
 ```{{exec}}
 
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
