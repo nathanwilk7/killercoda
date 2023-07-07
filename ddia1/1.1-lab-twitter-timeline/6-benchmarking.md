@@ -38,7 +38,9 @@ group by poster_id
 limit 3;
 ```{{exec}}
 
-I didn't populate the timelines table to keep the data size smaller, so let's populate it now (this usually takes about 45 seconds to run). Note that we're only keeping track of 10 tweets per user in the timelines table here (IRL this would be the N latest tweets):
+I didn't populate the timelines table to keep the data size smaller, so let's populate it now (this usually takes about 60 seconds to run). Note that we're only keeping track of 10 tweets per user in the timelines table here (IRL this would be the N latest tweets):
+
+TODO update these queries based on latest data and the actual ones in lab, maybe add gen script to notebook?
 
 ```
 insert into timelines
@@ -62,22 +64,6 @@ group by username;
 
 select 'done';
 ```{{exec}}
-
-```
-insert into timelines
-select
- users.username,
- json_group_array(json_object(
-  'tweet_id', tweets.id, 
-  'poster_id', tweets.poster_id, 
-  'content', tweets.content, 
-  'post_time', tweets.post_time))
-from tweets
-join follows on follows.followee_id = tweets.poster_id
-join users on users.id = follows.follower_id
-where post_time < 100000000
-group by users.username;
-```
 
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
 
@@ -203,6 +189,8 @@ TODO talk about which is faster/slower and why
 TODO
 
 So inserting a tweet into 200 timelines is slower than just inserting a single tweet into the tweets table, but it’s still reasonably fast using sqlite. However, think about how slow this could get if a user had millions of followers, which would mean you have to copy that tweet into millions of timelines.
+
+TODO incude plots of benchmarking on my laptop as N increases in diff dimensions (link to ro gsheet data).
 
 Caveat: I didn’t go into alternative ways to implement this, but instead focused on these 2 options with the hope that they are somewhat representative of common data systems which developers are designing and building but more so to give us a concrete example about which to discuss things like scalability and maintainability. I didn’t explore things like indexing, caching, denormalization, alternative data models, etc. TODO single writer, mem vs disk, etc.
 
