@@ -41,9 +41,8 @@ create table timelines (
 select 'done';
 ```{{exec}}
 
-We’re going to insert some dummy data, TODO n users, follows, tweets, timeline, etc TODO this should only take a second or two to complete.
+TODO replace this with precanned more realistic data in benchmark_* tables
 
-TODO tune numbers
 ```
 insert into users (username)
 select abs(random()) || 'user' from generate_series(1, 750);
