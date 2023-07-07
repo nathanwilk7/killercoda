@@ -8,59 +8,37 @@ First, exit your current sqlite shell (note you'll lose your previous work, but 
 .exit
 ```{{exec}}
 
-Then, start up a new sqlite instance with:
+Then, start up a new sqlite instance which is hooked up to some pre-generated benchmark data with:
 
 ```
-sqlite3
+sqlite3 benchmark.sqlite
 ```{{exec}}
 
-Let’s create the tables we’ll need (same as before):
+The table schemas are the same as before but they've been populated with some mock data. Let's see how much data is in there:
+
+TODO make this an exercise?
 
 ```
-create table users (
-  id integer primary key,
-  username text unique
-);
-
-create table tweets (
-  id integer primary key,
-  poster_id integer references users(id),
-  content text,
-  post_time integer
-);
-
-create table follows (
-  follower_id integer references users(id),
-  followee_id integer references users(id)
-);
-
-create table timelines (
-  username text unique references users(username), 
-  timeline_json text
-);
-select 'done';
+select count(*) from users;
 ```{{exec}}
-
-TODO replace this with precanned more realistic data in benchmark_* tables
 
 ```
-insert into users (username)
-select abs(random()) || 'user' from generate_series(1, 750);
-
-insert into follows
-select abs(random() % 750), abs(random() % 750) 
-from generate_series(1, 150), users;
-
-insert into tweets (poster_id, content, post_time) 
-select
-  abs(random() % 750), 
-  cast(abs(random()) as text) || ' some content',
-  abs(random() % 1680750000)
-from generate_series(1, 150), users;
-select 'done';
+select count(*) c from follows
+group by followee_id
+limit 3;
 ```{{exec}}
 
-Note, this will take some time (about TODO seconds in my testing). If the process dies due to memory or whatever, try rerunning the benchmarking section with smaller numbers of users, follows, and tweets.
+```
+select count(*) from tweets;
+```{{exec}}
+
+```
+select count(*) from tweets
+group by poster_id
+limit 3;
+```{{exec}}
+
+I didn't populate the timelines table to keep the data size smaller, so let's populate it now:
 
 ```
 insert into timelines
@@ -75,7 +53,6 @@ from tweets
 join follows on follows.followee_id = tweets.poster_id
 join users on users.id = follows.follower_id
 group by users.username;
-select 'done';
 ```{{exec}}
 
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
