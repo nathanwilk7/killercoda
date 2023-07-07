@@ -2,4 +2,4 @@ select
 timelines.username,
 timelines.timeline_json
 from timelines
-where timelines.username in 'chriscappuccio';
+where timelines.username = 'chriscappuccio';
