@@ -6,7 +6,7 @@ Note that on the free Killercoda plan, you only get 60 minutes (1 hour) to compl
 
 If the `docker pull` command running in the terminal fails or gets stuck in a retry loop, then expand the "Docker Fail Workaround" block below and run the code inside.
 
-<details><summary><b>Docker Fail Workaround</b></summary>
+<details><summary><b>Docker Fail Workaround (expand if needed)</b></summary>
 
 If the docker pull succeeds, then don't run this. If it fails or is stuck in a retry loop, then cancel the pull by typing CTRL+C in the terminal and then run the commands below to setup the tutorial without using docker.
 

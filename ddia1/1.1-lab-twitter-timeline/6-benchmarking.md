@@ -38,33 +38,6 @@ group by poster_id
 limit 3;
 ```{{exec}}
 
-I didn't populate the timelines table to keep the data size smaller, so let's populate it now (this usually takes about 60 seconds to run). Note that we're only keeping track of 10 tweets per user in the timelines table here (IRL this would be the N latest tweets):
-
-TODO update these queries based on latest data and the actual ones in lab, maybe add gen script to notebook?
-
-```
-insert into timelines
-with timeline_subquery as (
-  select
-  users.username,
-  json_object(
-    'tweet_id', tweets.id, 
-    'poster_id', tweets.poster_id, 
-    'content', tweets.content, 
-    'post_time', tweets.post_time) timeline_json,
-  row_number() over(partition by users.username order by tweets.post_time desc) AS rn
-  from tweets
-  join follows on follows.followee_id = tweets.poster_id
-  join users on users.id = follows.follower_id
-)
-select username, json_group_array(timeline_json)
-from timeline_subquery
-where rn <= 10
-group by username;
-
-select 'done';
-```{{exec}}
-
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
 
 ```
@@ -77,13 +50,15 @@ Let's look at the queries in `load_timeline_on_read.sql`  and `load_timeline_on_
 
 Here is the load timeline on read query:
 
+TODO update these queries based on latest data and the actual ones in lab, maybe add gen script to notebook?
+
 ```
 select t.*
 from users
 join follows f on f.follower_id = users.id
 join tweets t on t.poster_id = f.followee_id
-where users.id in (select id from users limit 1)
-order by t.post_time
+where users.id = 10
+order by t.post_time desc
 limit 10;
 ```
 
@@ -92,18 +67,9 @@ Here is the load timeline on write query:
 ```
 select
 timelines.username,
-json_extract(timelines.timeline_json, '$[0]'),
-json_extract(timelines.timeline_json, '$[1]'),
-json_extract(timelines.timeline_json, '$[2]'),
-json_extract(timelines.timeline_json, '$[3]'),
-json_extract(timelines.timeline_json, '$[4]'),
-json_extract(timelines.timeline_json, '$[5]'),
-json_extract(timelines.timeline_json, '$[6]'),
-json_extract(timelines.timeline_json, '$[7]'),
-json_extract(timelines.timeline_json, '$[8]'),
-json_extract(timelines.timeline_json, '$[9]')
+timelines.timeline_json
 from timelines
-where timelines.username in (select username from users limit 1);
+where timelines.username = 'husseinfazal';
 ```
 
 Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and run them a couple times to see how long each one takes.
@@ -133,41 +99,20 @@ Now we’re going to compare how long inserts take using the two approaches. Let
 Here is the insert timeline on read query:
 
 ```
-begin transaction;
-
-drop table if exists start_time;
-create temp table start_time as
-SELECT CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER) t;
-
 insert into tweets (poster_id, content, post_time)
 values (
-  1, 
+  10, 
   cast(abs(random()) as text) || ' moar content',
   abs(random() % 1680750000)
 );
-
-select
- '*** END TIME',
- round(((julianday('now') - 2440587.5)*86400000.0 - start_time.t)/1000.0, 3)
-from start_time;
-
-commit;
 ```
 
 Here is the insert timeline on write query:
 
 ```
-begin transaction;
-
-drop table if exists start_time;
-create temp table start_time as SELECT CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER) t;
-
-update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) where username in (select username from users order by random() limit 1);
-... (199 more times)
-
-select '*** END TIME', round(((julianday('now') - 2440587.5)*86400000.0 - start_time.t) / 1000.0, 3) time_ms from start_time;
-
-commit;
+update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) where username = 'bewaretheirs';
+update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) where username = 'BlueScreenDeath';
+... (1000 update statements to simulate a post by someone with 1000 followers)
 ```
 
 Same gig as above but reversed, how much faster do you think `insert_timeline_on_read.sql` will be compared to `insert_timeline_on_write.sql`? Explain your thought process.
