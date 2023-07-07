@@ -53,6 +53,8 @@ from tweets
 join follows on follows.followee_id = tweets.poster_id
 join users on users.id = follows.follower_id
 group by users.username;
+
+select 'done';
 ```{{exec}}
 
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
@@ -126,7 +128,7 @@ For this last benchmark, we're going to turn off the timer because I've written 
 .timer off
 ```{{exec}}
 
-Now we’re going to compare how long inserts take using the two approaches. Let's look at the insert on read/write queries (I'm only showing the first few lines of the insert on write, but there are actually 100 inserts to simulate a tweet by someone who has 100 followers).
+Now we’re going to compare how long inserts take using the two approaches. Let's look at the insert on read/write queries (I'm only showing the first few lines of the insert on write, but there are actually 200 inserts to simulate a tweet by someone who has 200 followers).
 
 ```
 .shell cat insert_timeline_on_read.sql
@@ -170,7 +172,7 @@ create temp table start_time as SELECT CAST((julianday('now') - 2440587.5)*86400
 
 update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) from generate_series(1, 1) where username in (select username from users order by random() limit 1);
 
-... (99 more times)
+... (199 more times)
 
 select '*** END TIME', round(((julianday('now') - 2440587.5)*86400000.0 - start_time.t) / 1000.0, 3) time_ms from start_time;
 
@@ -195,7 +197,7 @@ TODO talk about which is faster/slower and why
 
 TODO
 
-So inserting a tweet into 100 timelines is slower than just inserting a single tweet into the tweets table, but it’s still reasonably fast using sqlite. However, think about how slow this could get if a user had millions of followers, which would mean you have to copy that tweet into millions of timelines.
+So inserting a tweet into 200 timelines is slower than just inserting a single tweet into the tweets table, but it’s still reasonably fast using sqlite. However, think about how slow this could get if a user had millions of followers, which would mean you have to copy that tweet into millions of timelines.
 
 Caveat: I didn’t go into alternative ways to implement this, but instead focused on these 2 options with the hope that they are somewhat representative of common data systems which developers are designing and building but more so to give us a concrete example about which to discuss things like scalability and maintainability. I didn’t explore things like indexing, caching, denormalization, alternative data models, etc. TODO single writer, mem vs disk, etc.
 
