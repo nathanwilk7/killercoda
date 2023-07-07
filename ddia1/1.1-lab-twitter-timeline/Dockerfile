@@ -1,10 +1,6 @@
-FROM ubuntu
+FROM keinos/sqlite3
 
-WORKDIR /root
-
-RUN apt update
-
-RUN apt install sqlite3 -y
+WORKDIR /home/sqlite
 
 COPY lab/load_timeline_on_read.sql load_timeline_on_read.sql
 COPY lab/load_timeline_on_write.sql load_timeline_on_write.sql

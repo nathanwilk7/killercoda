@@ -17,6 +17,8 @@ Tweets
 
 Follows
 
+TODO https://github.com/killercoda/scenario-examples/tree/main/use-images
+
 [Diagram Link](https://whimsical.com/lab-0-1-entities-data-model-GVgogWwQiMcsU5roiByNjK)
 
 Let’s create the tables for our users, tweets, and follows in our SQLite database.
