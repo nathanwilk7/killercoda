@@ -61,7 +61,10 @@ from timeline_subquery
 where rn <= 10
 group by username;
 
+select 'done';
+```{{exec}}
 
+```
 insert into timelines
 select
  users.username,
@@ -75,9 +78,7 @@ join follows on follows.followee_id = tweets.poster_id
 join users on users.id = follows.follower_id
 where post_time < 100000000
 group by users.username;
-
-select 'done';
-```{{exec}}
+```
 
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
 
