@@ -12,6 +12,9 @@ If the docker pull succeeds, then don't run this. If it fails or is stuck in a r
 
 ```
 apt install sqlite3
+```{{exec}}
+
+```
 wget https://raw.githubusercontent.com/nathanwilk7/killercoda/master/ddia1/1.1-lab-twitter-timeline/lab/load_timeline_on_read.sql
 wget https://raw.githubusercontent.com/nathanwilk7/killercoda/master/ddia1/1.1-lab-twitter-timeline/lab/load_timeline_on_write.sql
 wget https://raw.githubusercontent.com/nathanwilk7/killercoda/master/ddia1/1.1-lab-twitter-timeline/lab/insert_timeline_on_read.sql
