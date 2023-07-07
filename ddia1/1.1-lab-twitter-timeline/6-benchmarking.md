@@ -97,7 +97,7 @@ Let's look at the queries in `load_timeline_on_read.sql`  and `load_timeline_on_
 .shell cat load_timeline_on_write.sql
 ```{{exec}}
 
-Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and read.
+Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and run them a couple times to see how long each one takes.
 
 <details><summary>Solutions</summary>
     
@@ -119,7 +119,7 @@ For this last benchmark, we're going to turn off the timer because I've written 
 .timer off
 ```{{exec}}
 
-Now we’re going to compare how long inserts take using the two approaches. Let's look at the insert on read/write queries (I'm only showing the first few lines of the insert on write, but there are actually 100 inserts).
+Now we’re going to compare how long inserts take using the two approaches. Let's look at the insert on read/write queries (I'm only showing the first few lines of the insert on write, but there are actually 100 inserts to simulate a tweet by someone who has 100 followers).
 
 ```
 .shell cat insert_timeline_on_read.sql
