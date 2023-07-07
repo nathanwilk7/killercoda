@@ -6,7 +6,7 @@ SELECT CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER) t;
 
 insert into tweets (poster_id, content, post_time)
 values (
-  1, 
+  10, 
   cast(abs(random()) as text) || ' moar content',
   abs(random() % 1680750000)
 );
