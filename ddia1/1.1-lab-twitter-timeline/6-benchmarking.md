@@ -38,9 +38,30 @@ group by poster_id
 limit 3;
 ```{{exec}}
 
-I didn't populate the timelines table to keep the data size smaller, so let's populate it now:
+I didn't populate the timelines table to keep the data size smaller, so let's populate it now (this usually takes about 45 seconds to run). Note that we're only keeping track of 10 tweets per user in the timelines table here (IRL this would be the N latest tweets):
 
 ```
+insert into timelines
+with timeline_subquery as (
+  select
+  users.username,
+  json_object(
+    'tweet_id', tweets.id, 
+    'poster_id', tweets.poster_id, 
+    'content', tweets.content, 
+    'post_time', tweets.post_time) timeline_json,
+  row_number() over(partition by users.username order by tweets.post_time desc) AS rn
+  from tweets
+  join follows on follows.followee_id = tweets.poster_id
+  join users on users.id = follows.follower_id
+  group by users.username
+)
+select username, json_group_array(timeline_json)
+from timeline_subquery
+where rn <= 10
+group by username;
+
+
 insert into timelines
 select
  users.username,
@@ -52,6 +73,7 @@ select
 from tweets
 join follows on follows.followee_id = tweets.poster_id
 join users on users.id = follows.follower_id
+where post_time < 100000000
 group by users.username;
 
 select 'done';
@@ -67,10 +89,6 @@ Let’s turn on the query timer which will tell us how long each query takes. We
 
 Let's look at the queries in `load_timeline_on_read.sql`  and `load_timeline_on_write.sql`.
 
-```
-.shell cat load_timeline_on_read.sql
-```{{exec}}
-
 Here is the load timeline on read query:
 
 ```
@@ -82,10 +100,6 @@ where users.id in (select id from users limit 1)
 order by t.post_time
 limit 10;
 ```
-
-```
-.shell cat load_timeline_on_write.sql
-```{{exec}}
 
 Here is the load timeline on write query:
 
@@ -130,10 +144,6 @@ For this last benchmark, we're going to turn off the timer because I've written 
 
 Now we’re going to compare how long inserts take using the two approaches. Let's look at the insert on read/write queries (I'm only showing the first few lines of the insert on write, but there are actually 200 inserts to simulate a tweet by someone who has 200 followers).
 
-```
-.shell cat insert_timeline_on_read.sql
-```{{exec}}
-
 Here is the insert timeline on read query:
 
 ```
@@ -158,10 +168,6 @@ from start_time;
 commit;
 ```
 
-```
-.shell cat insert_timeline_on_write.sql | head
-```{{exec}}
-
 Here is the insert timeline on write query:
 
 ```
@@ -170,8 +176,7 @@ begin transaction;
 drop table if exists start_time;
 create temp table start_time as SELECT CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER) t;
 
-update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) from generate_series(1, 1) where username in (select username from users order by random() limit 1);
-
+update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) where username in (select username from users order by random() limit 1);
 ... (199 more times)
 
 select '*** END TIME', round(((julianday('now') - 2440587.5)*86400000.0 - start_time.t) / 1000.0, 3) time_ms from start_time;
