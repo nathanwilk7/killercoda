@@ -92,9 +92,40 @@ Let's look at the queries in `load_timeline_on_read.sql`  and `load_timeline_on_
 .shell cat load_timeline_on_read.sql
 ```{{exec}}
 
+Here is the load timeline on read query:
+
+```
+select t.*
+from users
+join follows f on f.follower_id = users.id
+join tweets t on t.poster_id = f.followee_id
+where users.id in (select id from users limit 1)
+order by t.post_time
+limit 10;
+```
+
 ```
 .shell cat load_timeline_on_write.sql
 ```{{exec}}
+
+Here is the load timeline on write query:
+
+```
+select
+timelines.username,
+json_extract(timelines.timeline_json, '$[0]'),
+json_extract(timelines.timeline_json, '$[1]'),
+json_extract(timelines.timeline_json, '$[2]'),
+json_extract(timelines.timeline_json, '$[3]'),
+json_extract(timelines.timeline_json, '$[4]'),
+json_extract(timelines.timeline_json, '$[5]'),
+json_extract(timelines.timeline_json, '$[6]'),
+json_extract(timelines.timeline_json, '$[7]'),
+json_extract(timelines.timeline_json, '$[8]'),
+json_extract(timelines.timeline_json, '$[9]')
+from timelines
+where timelines.username in (select username from users limit 1);
+```
 
 Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and run them a couple times to see how long each one takes.
 
@@ -124,9 +155,50 @@ Now we’re going to compare how long inserts take using the two approaches. Let
 .shell cat insert_timeline_on_read.sql
 ```{{exec}}
 
+Here is the insert timeline on read query:
+
+```
+begin transaction;
+
+drop table if exists start_time;
+create temp table start_time as
+SELECT CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER) t;
+
+insert into tweets (poster_id, content, post_time)
+values (
+  1, 
+  cast(abs(random()) as text) || ' moar content',
+  abs(random() % 1680750000)
+);
+
+select
+ '*** END TIME',
+ round(((julianday('now') - 2440587.5)*86400000.0 - start_time.t)/1000.0, 3)
+from start_time;
+
+commit;
+```
+
 ```
 .shell cat insert_timeline_on_write.sql | head
 ```{{exec}}
+
+Here is the insert timeline on write query:
+
+```
+begin transaction;
+
+drop table if exists start_time;
+create temp table start_time as SELECT CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER) t;
+
+update timelines set timeline_json = json_insert(timeline_json, '$[#]', json_object('tweet_id', abs(random() % 2000000), 'poster_id', abs(random() % 2000), 'content', cast(abs(random()) as text) || 'more content', 'post_time', abs(random() % 1680750000))) from generate_series(1, 1) where username in (select username from users order by random() limit 1);
+
+... (99 more times)
+
+select '*** END TIME', round(((julianday('now') - 2440587.5)*86400000.0 - start_time.t) / 1000.0, 3) time_ms from start_time;
+
+commit;
+```
 
 Same gig as above but reversed, how much faster do you think `insert_timeline_on_read.sql` will be compared to `insert_timeline_on_write.sql`? Explain your thought process.
 
