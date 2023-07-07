@@ -14,7 +14,7 @@ Then, start up a new sqlite instance which is hooked up to some pre-generated be
 sqlite3 benchmark.sqlite
 ```{{exec}}
 
-The table schemas are the same as before but they've been populated with some mock data. Let's see how much data is in there:
+The table schemas are the same as before but they've been populated with some mock data (note that the mock data is from the BigQuery hackernews public dataset, so it's not actually tweets and each comment has been truncated to 100 chars). Let's see how much data is in there:
 
 TODO make this an exercise?
 
