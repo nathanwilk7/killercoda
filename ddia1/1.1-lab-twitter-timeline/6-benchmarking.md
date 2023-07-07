@@ -54,7 +54,6 @@ with timeline_subquery as (
   from tweets
   join follows on follows.followee_id = tweets.poster_id
   join users on users.id = follows.follower_id
-  group by users.username
 )
 select username, json_group_array(timeline_json)
 from timeline_subquery
