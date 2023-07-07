@@ -20,6 +20,8 @@ TODO copy from end of preface
 
 # Next
 
-TODO should text-only be on blog but labs are on killercoda? or consolidate things more?
+TODO should text-only be on blog but labs are on killercoda? or consolidate things more? I think only labs on killercoda and rest on blog
+
+TODO mention that killercoda says to use chrome or edge browser (not safari).
 
 This introduction was a text-only intro, continue to the next scenario to begin an interactive lab exploring reliability, scalability, and maintainability.

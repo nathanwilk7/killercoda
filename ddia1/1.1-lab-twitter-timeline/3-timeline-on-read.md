@@ -116,10 +116,10 @@ join tweets t on t.poster_id = f.followee_id
 where f.follower_id = 1 
 order by t.post_time;
 ```{{exec}}
-    
-Do you think this design for implementing timelines is a good solution? Is it performant? Is it scalable? Is it reliable?
 
 </details> 
+    
+Do you think this design for implementing timelines is a good solution? Is it performant? Is it scalable? Is it reliable?
 
 <details><summary>Solution</summary>
     

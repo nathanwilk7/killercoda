@@ -1,6 +1,6 @@
 {
-  "title": "DDIA Ch 5 TODO",
-  "description": "My Ch 5 TODO",
+  "title": "Designing Data-Intensive Applications Interactive Course: Chapter 5",
+  "description": "Replication",
   "items": [
     {"path": "5.1-lab-replication-lag"}
   ]
