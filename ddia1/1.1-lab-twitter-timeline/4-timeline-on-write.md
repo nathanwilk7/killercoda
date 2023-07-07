@@ -11,6 +11,7 @@ create table timelines (
   username text unique references users(username), 
   timeline_json text
 );
+select 'done';
 ```{{exec}}
 
 Let’s insert the tweets from our tweets table into this timelines table to show how it works. Note that the code below is pretty hacky and you’d probably do something better than this in real life. We’re essentially using the timelines table as a key value store where the key is the user ID and the value is a JSON array of the user’s timeline.
@@ -20,6 +21,7 @@ Create an empty array for each user's id:
 ```
 insert into timelines 
 select username, json_array() from users;
+select 'done';
 ```{{exec}}
 
 Now each user has an empty JSON array for their timeline:
@@ -81,6 +83,7 @@ from (
   where content = 'bob second tweet'
 ) tweets
 where username = 'alice';
+select 'done';
 ```{{exec}}
 
 Now if we look at the timelines, we'll see that alice's is populated with the expected tweets:
