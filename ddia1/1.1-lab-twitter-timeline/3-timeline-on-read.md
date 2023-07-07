@@ -15,6 +15,7 @@ insert into follows
 select alice.id, charlie.id 
 from users alice, users charlie 
 where alice.username = 'alice' and charlie.username = 'charlie';
+select 'done';
 ```{{exec}}
 
 What we’re done here is create 4 users with the usernames `alice`, `bob`, `charlie`, and `david` and then `alice` has started following `bob` and `charlie` (but not `david`).

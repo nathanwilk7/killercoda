@@ -40,6 +40,7 @@ create table follows (
     follower_id integer references users(id),
     followee_id integer references users(id)
 );
+.print 'done'
 ```{{exec}}
 
 </details>
