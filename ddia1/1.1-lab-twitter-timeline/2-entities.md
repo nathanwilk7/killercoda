@@ -8,7 +8,7 @@ sqlite3
 
 First, let’s think about what tables we should create. Try to come up with a data model on your own to support the use case described above and then write the create table statements for it. You're welcome to create your table in the sqlite instance and insert some mock data in them. Once you’re ready, compare your solution with the one below. You can either keep your data model as you put it into the system and adapt the rest of the lab to work for your own data model or you can use the code I provide below which will work with the rest of the lab code. In general, feel free to follow this same rule of thumb for all labs.
 
-<details><summary><b>Solution</b></summary>
+<details><summary><b>Solution (click to expand)</b></summary>
 The key entities/nouns here are:
 
 Users
