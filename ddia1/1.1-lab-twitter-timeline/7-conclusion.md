@@ -8,6 +8,6 @@ Wrote some SQL to support a super simplified Twitter in SQLite using either time
 
 When evaluating a system design, some high level ideas to consider are its performance, scalability, reliability, and maintainability. Here we primarily discussed how our timeline implementation affects performance, though we touched a bit on scalability and maintainability as well.
 
-I do want to add that most future labs will go deeper into the technical details (e.g.: topics like replication and more details on data system internals), see this TODO [list of future topics](https://www.notion.so/Designing-Data-Intensive-Applications-Course-ce023398f3134e20951afab1779bbcef?pvs=21), but this lab was meant to give a general intro to thinking about system design tradeoffs.
+I do want to add that most future labs will go deeper into the technical details (e.g.: topics like replication and more details on data system internals), see this [list of future topics](https://dataaldente.com/Home/Posts/Designing-Data-Intensive-Applications-Course.html), but this lab was meant to give a general intro to thinking about system design tradeoffs.
 
-Fin. Head back to TODO [Chapter 1](https://www.notion.so/Designing-Data-Intensive-Applications-Course-ce023398f3134e20951afab1779bbcef?pvs=21) to continue the course.
+Fin. Head back to the [Course Homepage](https://dataaldente.com/Home/Posts/Designing-Data-Intensive-Applications-Course.html) to continue.
