@@ -14,9 +14,9 @@ Then, start up a new sqlite instance which is hooked up to some pre-generated be
 sqlite3 benchmark.sqlite
 ```{{exec}}
 
-The table schemas are the same as before but they've been populated with some mock data (note that the mock data is from the BigQuery hackernews public dataset, so it's not actually tweets and each comment has been truncated to 100 chars). Let's see how much data is in there:
+The table schemas are the same as before but they've been populated with some mock data (note that the mock data is from the BigQuery hackernews public dataset, so it's not actually tweets and each comment has been truncated to 100 chars). Let's explore the data a bit. Figure things out like how many users/tweets/etc there are and how many followers users have and whatever else you want to check.
 
-TODO make this an exercise?
+<details><summary>Solution</summary>
 
 ```
 select count(*) from users;
@@ -38,19 +38,17 @@ group by poster_id
 limit 3;
 ```{{exec}}
 
+</details>
+
 Let’s turn on the query timer which will tell us how long each query takes. We’ll use the timer for the first two queries and will hack our own “transaction timer” for the last two queries.
 
 ```
 .timer on
 ```{{exec}}
 
-**Stop** and **think hard** (maybe even do some reading about SQLite TODO links) about these benchmarking questions before you look at the solutions!
-
 Let's look at the queries in `load_timeline_on_read.sql`  and `load_timeline_on_write.sql`.
 
 Here is the load timeline on read query:
-
-TODO update these queries based on latest data and the actual ones in lab, maybe add gen script to notebook?
 
 ```
 select t.*
@@ -74,6 +72,8 @@ where timelines.username = 'husseinfazal';
 
 Given the amount of dummy data, how much faster do you think load timeline on write will be compared to load timeline on read? Explain your thought process. Take your time and be as thorough as you can. When you’re ready, open the solution up and run them a couple times to see how long each one takes.
 
+**Stop** and **think hard** about these benchmarking questions before you look at the solutions!
+
 <details><summary>Solutions</summary>
     
 ```
@@ -85,9 +85,8 @@ Given the amount of dummy data, how much faster do you think load timeline on wr
 ```{{exec}}
 
 TODO talk about which is faster/slower and why
-TODO investigate sqlite query plan and include details about access, indexes, etc
 
-</details>    
+</details>
 
 For this last benchmark, we're going to turn off the timer because I've written a custom "timer" into the queries themselves which will print out how long they take.
 ```
@@ -129,18 +128,16 @@ Same gig as above but reversed, how much faster do you think `insert_timeline_on
 
 TODO talk about which is faster/slower and why
     
-</details>
-
-TODO
-
 So inserting a tweet into 200 timelines is slower than just inserting a single tweet into the tweets table, but it’s still reasonably fast using sqlite. However, think about how slow this could get if a user had millions of followers, which would mean you have to copy that tweet into millions of timelines.
 
-TODO incude plots of benchmarking on my laptop as N increases in diff dimensions (link to ro gsheet data).
+</details>
 
-Caveat: I didn’t go into alternative ways to implement this, but instead focused on these 2 options with the hope that they are somewhat representative of common data systems which developers are designing and building but more so to give us a concrete example about which to discuss things like scalability and maintainability. I didn’t explore things like indexing, caching, denormalization, alternative data models, etc. TODO single writer, mem vs disk, etc.
+Caveat: I didn’t go into alternative ways to implement this, but instead focused on these 2 options with the hope that they are somewhat representative of common data systems which developers are designing and building but more so to give us a concrete example about which to discuss things like scalability and maintainability. I didn’t explore things like indexing, caching, denormalization, alternative data models, etc (e.g.: I'm not saying this is actually a good implementation of twitter timelines on SQLite, just using the example to illustrate some of the principles in design tradeoffs).
 
 You can now exit the sqlite shell:
 
 ```
 .exit
 ```{{exec}}
+
+This benchmarking example was meant to show how different designs for reading/writing affect performance.

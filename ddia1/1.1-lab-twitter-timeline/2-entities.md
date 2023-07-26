@@ -17,7 +17,7 @@ Tweets
 
 Follows
 
-TODO https://github.com/killercoda/scenario-examples/tree/main/use-images
+![Scan results](lab/2-diagram.jpg)
 
 [Diagram Link](https://whimsical.com/lab-0-1-entities-data-model-GVgogWwQiMcsU5roiByNjK)
 
