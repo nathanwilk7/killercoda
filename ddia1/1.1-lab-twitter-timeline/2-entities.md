@@ -19,9 +19,6 @@ Follows
 
 ![Scan results](./lab/2-diagram.jpg)
 
-<img src="./lab/2-diagram.jpg" style="width: 50px">
-<img src="lab/2-diagram.jpg" style="width: 50px">
-
 [Diagram Link](https://whimsical.com/lab-0-1-entities-data-model-GVgogWwQiMcsU5roiByNjK)
 
 Let’s create the tables for our users, tweets, and follows in our SQLite database.
